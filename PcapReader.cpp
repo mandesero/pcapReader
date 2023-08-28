@@ -34,7 +34,7 @@ bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket) {
 
     while (i < sizeof(PcapPacket) && std::cin >> bt) {
         buff[i++] = bt;
-        // std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(bt) << ' ';
+        std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(bt) << ' ';
     }
     std::cout << std::endl;
     
@@ -47,7 +47,6 @@ bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket) {
     PcapPacket* pcapPacketHdr = (PcapPacket*)buff;
 
     size_t len = pcapPacketHdr->included_length;
-    // std::cout << "len: " << len << '\n';
 
     timeval time{
         pcapPacketHdr->timestamp_seconds,
@@ -69,12 +68,12 @@ bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket) {
     const uint8_t* const_pkt = packet;
     rawPacket = pcpp::RawPacket(const_pkt, len, time, false);
 
-    // for (int i = 0; i < len; i++) {
-        // if (i % 16 == 0 && i != 0)
-            // std::cout << '\n';
-        // std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(packet[i]) << ' ';
-    // }
-    // std::cout << '\n';
+    for (int i = 0; i < len; i++) {
+        if (i % 16 == 0 && i != 0)
+            std::cout << '\n';
+        std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(packet[i]) << ' ';
+    }
+    std::cout << '\n';
     delete[] buff;
     delete[] packet;
     return true;

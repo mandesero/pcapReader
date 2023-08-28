@@ -9,7 +9,6 @@ int main(int argc, char* argv[]) {
         return 1;
 
     pcpp::RawPacket rawPacket;
-    std::vector<std::pair<std::string, std::string>> v;
 
     int count = 0;
     while (getNextPacketFromSteam(rawPacket)) {
@@ -21,16 +20,12 @@ int main(int argc, char* argv[]) {
             std::string srcIP = ipLayer->getSrcIPAddress().toString();
             std::string dstIP = ipLayer->getDstIPAddress().toString();
 
-            // std::cout << srcIP << " " << dstIP << '\n';
-            std::pair<std::string, std::string> p(srcIP, dstIP);
-            v.push_back(p);
+            std::cout << srcIP << " " << dstIP << '\n';
         } else {
-            v.push_back(std::make_pair("-", "-"));
-            // std::cout << "Not IP packet" << '\n';
+            std::cout << "Not IP packet" << '\n';
         }
         count++;
     }
-    // std::cout << "Packets: " << count << std::endl;
-    std::cout << v << std::endl;
+    std::cout << "Packets: " << count << std::endl;
     return 0;
 }
