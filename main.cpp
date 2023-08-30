@@ -2,6 +2,7 @@
 #include "libs/header/IPLayer.h"
 #include "libs/header/Packet.h"
 #include "output.h"
+#include <cstdio>
 #include <vector>
 
 int main(int argc, char* argv[]) {
@@ -9,7 +10,7 @@ int main(int argc, char* argv[]) {
         return 1;
 
     pcpp::RawPacket rawPacket;
-
+    std::freopen(nullptr, "rb", stdin);
     int count = 0;
     while (getNextPacketFromSteam(rawPacket)) {
         
@@ -22,7 +23,7 @@ int main(int argc, char* argv[]) {
 
             std::cout << srcIP << " " << dstIP << '\n';
         } else {
-            std::cout << "Not IP packet" << '\n';
+            std::cout << "Not IPv4 packet" << '\n';
         }
         count++;
     }
