@@ -2,12 +2,14 @@
 #include <cstdint>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fstream>
 
-int isPcapStream() {
+int isPcapStream(std::ifstream& input) {
+
     uint8_t* h = new uint8_t[sizeof(PcapHdr)];
     char bt;
     int i = 0;
-    while (i < sizeof(PcapHdr) && (bt = fgetc(stdin)) != EOF) {
+    while (i < sizeof(PcapHdr) && input.get(bt)) {
         h[i++] = bt;
     }
     PcapHdr* pcap_header = (PcapHdr*)h;
@@ -27,12 +29,13 @@ int isPcapStream() {
     return -1;
 }
 
-bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket) {
+bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket, std::ifstream& input) {
+
     uint8_t* buff = new uint8_t[sizeof(PcapPacket)];
     char bt;
     int i = 0;
 
-    while (i < sizeof(PcapPacket) && (bt = fgetc(stdin)) != EOF) {
+    while (i < sizeof(PcapPacket) && input.get(bt)) {
         buff[i++] = bt;
     }
     std::cout << std::endl;
@@ -54,7 +57,7 @@ bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket) {
     uint8_t* packet = new uint8_t[len];
 
     i = 0;
-    while (i < len && (bt = fgetc(stdin)) != EOF) {
+    while (i < len && input.get(bt)) {
         packet[i++] = bt;
     }
 

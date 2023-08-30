@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 
@@ -22,5 +23,5 @@ struct PcapPacket {
 };
 
 
-int isPcapStream();
-bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket);
+int isPcapStream(std::ifstream& input);
+bool getNextPacketFromSteam(pcpp::RawPacket& rawPacket, std::ifstream& input);

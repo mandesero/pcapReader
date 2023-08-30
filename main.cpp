@@ -4,15 +4,23 @@
 #include "output.h"
 #include <cstdio>
 #include <vector>
+#include <fstream>
 
 int main(int argc, char* argv[]) {
-    if (isPcapStream() == -1)
+    std::ifstream input;
+    input.open("/dev/stdin", std::ios::binary);
+    if (!input) {
+        std::cout << "stdin open error" << std::endl;
+        return 1;
+    }
+
+    if (isPcapStream(input) == -1)
         return 1;
 
     pcpp::RawPacket rawPacket;
-    std::freopen(nullptr, "rb", stdin);
+
     int count = 0;
-    while (getNextPacketFromSteam(rawPacket)) {
+    while (getNextPacketFromSteam(rawPacket, input)) {
         
         pcpp::Packet parsedPacket(&rawPacket);
         if (parsedPacket.isPacketOfType(pcpp::IPv4)) {
@@ -28,5 +36,7 @@ int main(int argc, char* argv[]) {
         count++;
     }
     std::cout << "Packets: " << count << std::endl;
+    input.close();
+    
     return 0;
 }
